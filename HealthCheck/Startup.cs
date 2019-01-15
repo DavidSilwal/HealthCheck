@@ -27,17 +27,18 @@ namespace HealthCheck
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+
             services
                 .AddHealthChecks()
-                .AddOracle("")
-                .AddMySql("")
+                .AddOracle(Configuration["Connectionstrings:Oracle"])
+                .AddMySql(Configuration["Connectionstrings:MySQL"])
                 .AddSqlServer(
-                    connectionString: Configuration["Data:ConnectionStrings:Sql"],
+                    connectionString: Configuration["Connectionstrings:SQLServer"],
                     healthQuery: "SELECT 1;",
                     name: "sql",
                     failureStatus: HealthStatus.Degraded,
                     tags: new string[] { "db", "s   ql", "sqlserver" })
-                .AddRabbitMQ("");
+                .AddRabbitMQ(Configuration["Connectionstrings:RabitMQ"]);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
